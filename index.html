@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Versus Sancti - Biblical Discord Bot</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -23,7 +23,25 @@
             color: white;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
         }
+
+        /* Floating Background Text */
+        .floating-text {
+            position: absolute;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.08);
+            font-weight: 300;
+            pointer-events: none;
+            z-index: 0;
+            white-space: nowrap;
+        }
+
+        .float-1 { top: 15%; right: 5%; }
+        .float-2 { top: 30%; left: 10%; }
+        .float-3 { top: 45%; right: 15%; }
+        .float-4 { top: 60%; left: 20%; }
+        .float-5 { top: 75%; right: 10%; }
 
         /* Navigation */
         .navbar {
@@ -33,14 +51,14 @@
             right: 0;
             z-index: 1000;
             padding: 1rem 2rem;
-            background: rgba(26, 27, 58, 0.95);
+            background: rgba(45, 27, 105, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
         }
 
         .navbar.scrolled {
-            background: rgba(26, 27, 58, 0.8);
+            background: rgba(45, 27, 105, 0.9);
         }
 
         .nav-container {
@@ -52,10 +70,19 @@
         }
 
         .logo {
-            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: white;
             text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
         }
 
         .nav-links {
@@ -80,37 +107,37 @@
             min-height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 0 2rem;
+            justify-content: flex-end;
+            text-align: right;
+            padding: 0 4rem 0 2rem;
             position: relative;
         }
 
         .hero-content {
-            max-width: 800px;
+            max-width: 600px;
             z-index: 2;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            line-height: 1.2;
+            font-size: 4.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
         }
 
         .hero p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+            font-weight: 400;
         }
 
         .cta-buttons {
             display: flex;
             gap: 1rem;
-            justify-content: center;
+            justify-content: flex-end;
             flex-wrap: wrap;
         }
 
@@ -147,16 +174,36 @@
             transform: translateY(-2px);
         }
 
+        /* Hero Background Image */
+        .hero-bg {
+            position: absolute;
+            top: 50%;
+            left: -5%;
+            transform: translateY(-50%);
+            width: 60%;
+            max-width: 600px;
+            opacity: 0.15;
+            z-index: 1;
+        }
+
         /* Stats Section */
         .stats {
             padding: 4rem 2rem;
             text-align: center;
             background: rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
         }
 
         .stats-container {
             max-width: 1200px;
             margin: 0 auto;
+        }
+
+        .stats h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
         }
 
         .stats-grid {
@@ -188,6 +235,8 @@
         /* Features Section */
         .features {
             padding: 6rem 2rem;
+            position: relative;
+            z-index: 2;
         }
 
         .features-container {
@@ -198,50 +247,59 @@
         .section-title {
             text-align: center;
             font-size: 2.5rem;
-            font-weight: 700;
+            font-weight: 800;
             margin-bottom: 3rem;
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
 
         .feature-card {
             background: rgba(255, 255, 255, 0.05);
-            padding: 2.5rem;
+            padding: 2rem;
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            min-height: 120px;
         }
 
         .feature-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             background: rgba(255, 255, 255, 0.08);
         }
 
         .feature-icon {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 1.5rem;
+            width: 60px;
+            height: 60px;
             border-radius: 12px;
             background: rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .feature-content {
+            flex: 1;
         }
 
         .feature-title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .feature-description {
             color: rgba(255, 255, 255, 0.8);
-            line-height: 1.6;
+            line-height: 1.5;
+            font-size: 0.95rem;
         }
 
         /* CTA Section */
@@ -249,6 +307,8 @@
             padding: 6rem 2rem;
             text-align: center;
             background: rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
         }
 
         .cta-container {
@@ -258,8 +318,9 @@
 
         .cta-section h2 {
             font-size: 2.5rem;
-            font-weight: 700;
+            font-weight: 400;
             margin-bottom: 1rem;
+            text-transform: lowercase;
         }
 
         .cta-section p {
@@ -268,11 +329,44 @@
             margin-bottom: 2rem;
         }
 
+        .btn-cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 1.2rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-cta .main-text {
+            display: block;
+            font-size: 1.2rem;
+        }
+
+        .btn-cta .sub-text {
+            display: block;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
         /* Footer */
         .footer {
             padding: 3rem 2rem 2rem;
             background: rgba(0, 0, 0, 0.4);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
         }
 
         .footer-container {
@@ -311,22 +405,22 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
-        /* Hero Background Image */
-        .hero-bg {
-            position: absolute;
-            top: 50%;
-            left: -10%;
-            transform: translateY(-50%);
-            width: 70%;
-            max-width: 700px;
-            opacity: 0.15;
-            z-index: 1;
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
+            .hero {
+                text-align: center;
+                justify-content: center;
+                padding: 0 2rem;
+            }
+            
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 3rem;
+            }
+            
+            .hero-bg {
+                left: -15%;
+                width: 80%;
+                opacity: 0.1;
             }
             
             .nav-links {
@@ -334,12 +428,16 @@
             }
             
             .cta-buttons {
-                flex-direction: column;
-                align-items: center;
+                justify-content: center;
             }
             
-            .btn {
-                width: 200px;
+            .feature-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .floating-text {
+                display: none;
             }
         }
 
@@ -379,10 +477,20 @@
     </style>
 </head>
 <body>
+    <!-- Floating Background Text -->
+    <div class="floating-text float-1">Finding profound passages that resonate..</div>
+    <div class="floating-text float-2">Easy Setup! /start</div>
+    <div class="floating-text float-3">Use the lukewarm filter to keep a lighter mood! 🔥</div>
+    <div class="floating-text float-4">Posting daily verses in selected channels!</div>
+    <div class="floating-text float-5">Add a heart reaction to your favorite verses! ❤️</div>
+
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="#" class="logo">Versus Sancti</a>
+            <a href="#" class="logo">
+                <img src="https://raw.githubusercontent.com/loopedinpleasure/versus-sancti-website/main/Favicon.png" alt="Versus Sancti" class="logo-icon">
+                Versus Sancti
+            </a>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="https://discord.gg/YSuy2UPVzb" target="_blank">Support</a></li>
@@ -399,7 +507,7 @@
         
         <div class="hero-content fade-in-up">
             <h1>Versus Sancti</h1>
-            <p>Delivers meaningful, dramatic Bible verses with an intelligent algorithm. Features a setup wizard, multiple translations, scheduling, sequential mode, a lukewarm filter for those who want a lighter mood, and favorites. Finds profound passages that resonate.</p>
+            <p>Delivers meaningful Bible verses with an intelligent algorithm. It features multiple translations and a sequential mode. Everything is customizable as you need it!</p>
             <div class="cta-buttons">
                 <a href="#invite" class="btn btn-primary">Invite Bot</a>
                 <a href="#features" class="btn btn-secondary">Learn More</a>
@@ -435,26 +543,34 @@
             <div class="features-grid">
                 <div class="feature-card fade-in-up">
                     <div class="feature-icon">🧠</div>
-                    <h3 class="feature-title">Intelligent Selection</h3>
-                    <p class="feature-description">Finds meaningful, dramatic verses that resonate with your community using advanced analysis.</p>
+                    <div class="feature-content">
+                        <h3 class="feature-title">Intelligent Selection</h3>
+                        <p class="feature-description">Finds meaningful, dramatic verses that resonate with your community using advanced analysis.</p>
+                    </div>
                 </div>
                 
                 <div class="feature-card fade-in-up">
                     <div class="feature-icon">📖</div>
-                    <h3 class="feature-title">Multiple Translations</h3>
-                    <p class="feature-description">Choose from NIV, ESV, CSB, NKJV, and KJV. Perfect verse, perfect translation.</p>
+                    <div class="feature-content">
+                        <h3 class="feature-title">Multiple Translations</h3>
+                        <p class="feature-description">Choose from NIV, ESV, CSB, NKJV, and KJV. Perfect verse, perfect translation.</p>
+                    </div>
                 </div>
                 
                 <div class="feature-card fade-in-up">
                     <div class="feature-icon">⏰</div>
-                    <h3 class="feature-title">Smart Scheduling</h3>
-                    <p class="feature-description">Daily verses delivered when your community is most active. 1-24 posts per day.</p>
+                    <div class="feature-content">
+                        <h3 class="feature-title">Smart Scheduling</h3>
+                        <p class="feature-description">Daily verses delivered when your community is most active. 1-24 posts per day.</p>
+                    </div>
                 </div>
                 
                 <div class="feature-card fade-in-up">
                     <div class="feature-icon">⚙️</div>
-                    <h3 class="feature-title">Setup Wizard</h3>
-                    <p class="feature-description">Get started in minutes with our guided setup. No technical knowledge required.</p>
+                    <div class="feature-content">
+                        <h3 class="feature-title">Setup Wizard</h3>
+                        <p class="feature-description">Get started in minutes with our guided setup. No technical knowledge required.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -463,9 +579,12 @@
     <!-- Call to Action -->
     <section class="cta-section" id="invite">
         <div class="cta-container">
-            <h2>Come on, Invite me!</h2>
-            <p>Ready to bring meaningful Bible verses to your Discord community? Add Versus Sancti today and start delivering powerful, resonant passages that inspire and encourage your members.</p>
-            <a href="#" class="btn btn-primary">Invite Versus Sancti</a>
+            <h2>come on, invite me</h2>
+            <p>Add Versus Sancti today and start delivering your community with powerful passages today.</p>
+            <a href="#" class="btn-cta">
+                <span class="main-text">Invite</span>
+                <span class="sub-text">Versus Sancti</span>
+            </a>
         </div>
     </section>
 
@@ -514,6 +633,18 @@
             } else {
                 navbar.classList.remove('scrolled');
             }
+        });
+
+        // Floating text parallax effect
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const parallax = scrolled * 0.5;
+            
+            document.querySelector('.float-1').style.transform = `translateY(${parallax * 0.2}px)`;
+            document.querySelector('.float-2').style.transform = `translateY(${parallax * 0.3}px)`;
+            document.querySelector('.float-3').style.transform = `translateY(${parallax * 0.1}px)`;
+            document.querySelector('.float-4').style.transform = `translateY(${parallax * 0.4}px)`;
+            document.querySelector('.float-5').style.transform = `translateY(${parallax * 0.2}px)`;
         });
 
         // Smooth scrolling for anchor links
